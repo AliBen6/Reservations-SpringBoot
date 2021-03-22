@@ -4,8 +4,6 @@ import java.net.URI;
 import java.util.List;
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
@@ -21,12 +19,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import be.iccbxl.pid.artist.model.Artist;
 import be.iccbxl.pid.artist.service.ArtistService;
+import lombok.extern.slf4j.Slf4j;
 
-@RequestMapping("api/Reservations/V1/artists/")
+@Slf4j
 @RestController
+@RequestMapping("api/Reservations/V1/artists/")
 public class ArtistController {
-
-	private static final Logger LOG = LoggerFactory.getLogger(ArtistController.class);
 
     @Autowired
     private ArtistService artistService;

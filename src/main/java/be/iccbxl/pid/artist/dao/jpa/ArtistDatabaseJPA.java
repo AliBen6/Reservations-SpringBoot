@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import be.iccbxl.pid.artist.dao.ArtistDao;
 
 @Repository
-@EnableJpaRepositories
-@EnableTransactionManagement
+//@EnableJpaRepositories
+//@EnableTransactionManagement
 public class ArtistDatabaseJPA implements ArtistDao{
 
 	@Autowired

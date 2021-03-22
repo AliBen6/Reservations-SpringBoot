@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 
 import be.iccbxl.pid.artist.dao.ArtistDao;
 import be.iccbxl.pid.artist.model.Artist;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class ArtistService {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(ArtistService.class);
-
     @Autowired
     private ArtistDao artistDAO;
 
