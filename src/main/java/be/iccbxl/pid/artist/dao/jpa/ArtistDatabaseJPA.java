@@ -48,6 +48,5 @@ public class ArtistDatabaseJPA implements ArtistDao{
 		// TODO Auto-generated method stub
 		return artistRepository.existsById(id);
 	}
-	
 
 }

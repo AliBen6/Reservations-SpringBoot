@@ -9,6 +9,13 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name="artists")
 public class Artist {
@@ -24,7 +31,7 @@ public class Artist {
 	@Column(name = "lastname", nullable = false)
     @JsonProperty("lastName")
 	private String lastname;
-	
+	/*
 	public Artist() {}
 	
 	public Artist(long id, String firstname, String lastname) {
@@ -53,5 +60,5 @@ public class Artist {
 	public String toString() {
 		return "Artist [firstname=" + firstname + ", lastname=" + lastname + "]";
 	}
-
+	*/
 }
