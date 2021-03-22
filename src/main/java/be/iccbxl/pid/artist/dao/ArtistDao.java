@@ -5,14 +5,14 @@ import be.iccbxl.pid.artist.model.Artist;
 
 public interface ArtistDao {
 
-	public List <Artist> findAll();
+	List <Artist> findAll();
     
-    public Artist findById(long id);
+    Artist findById(long id);
 
-    public long deleteById(long id);
+    long deleteById(long id);
 
-    public Artist save(Artist artist);
+    Artist save(Artist artist);
 
-	public Boolean existsById(long id);
+	Boolean existsById(long id);
     
 }
