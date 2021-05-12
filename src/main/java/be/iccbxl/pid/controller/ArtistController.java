@@ -1,7 +1,5 @@
 package be.iccbxl.pid.controller;
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +17,6 @@ public class ArtistController {
    @GetMapping("/artists")
    public String index(Model model) {
 	   List<Artist> artists = service.getAllArtists();
-	   artists.toString();
 	   model.addAttribute("artists", artists);
 	   model.addAttribute("title", "Liste des artistes");
 
