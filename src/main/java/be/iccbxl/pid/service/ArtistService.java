@@ -16,7 +16,6 @@ public class ArtistService {
 	@Autowired
 	private ArtistRepository artistRepository;
 	
-	
 	public List<Artist> getAllArtists() {
 		List<Artist> artists = new ArrayList<>();
 		
