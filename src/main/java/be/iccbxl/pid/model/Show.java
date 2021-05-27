@@ -1,15 +1,10 @@
 package be.iccbxl.pid.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Column;
+import javax.persistence.*;
 
 import com.github.slugify.Slugify;
 
@@ -51,6 +46,9 @@ public class Show {
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
 
+    @OneToMany(targetEntity=Representation.class, mappedBy="show")
+    private List<Representation> representations = new ArrayList<>();
+
     public Show() { }
 
     public Show(String title, String description, String posterUrl, Location location, boolean bookable,
@@ -66,6 +64,30 @@ public class Show {
         this.price = price;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = null;
+    }
+
+    public List<Representation> getRepresentations() {
+        return representations;
+    }
+
+    public Show addRepresentation(Representation representation) {
+        if(!this.representations.contains(representation)) {
+            this.representations.add(representation);
+            representation.setShow(this);
+        }
+
+        return this;
+    }
+
+    public Show removeRepresentation(Representation representation) {
+        if (this.representations.contains(representation)) {
+            this.representations.remove(representation);
+            if (representation.getLocation().equals(this)) {
+                representation.setLocation(null);
+            }
+        }
+
+        return this;
     }
 
 
@@ -152,7 +174,7 @@ public class Show {
         return "Show [id=" + id + ", slug=" + slug + ", title=" + title
                 + ", description=" + description + ", posterUrl=" + posterUrl + ", location="
                 + location + ", bookable=" + bookable + ", price=" + price
-                + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
+                + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", representations=" + representations.size() + "]";
     }
 
 }
