@@ -3,7 +3,7 @@ CREATE TABLE `artist_type` (
 `artist_id` int(11) NOT NULL,
 `type_id` int(11) NOT NULL,
 PRIMARY KEY(id)
-) ;
+);
 
 --
 -- Index pour la table `artist_type`
