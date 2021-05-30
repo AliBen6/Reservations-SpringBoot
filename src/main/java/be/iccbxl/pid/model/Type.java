@@ -1,10 +1,8 @@
 package be.iccbxl.pid.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="types")
@@ -15,9 +13,38 @@ public class Type {
 	private String type;
 	
 	protected Type() { }
+
+	@ManyToMany
+	@JoinTable(
+			name = "artist_type",
+			joinColumns = @JoinColumn(name = "type_id"),
+			inverseJoinColumns = @JoinColumn(name = "artist_id"))
+	private List<Artist> artists = new ArrayList<>();
 	
 	public Type(String type) {
 		this.type = type;
+	}
+
+	public List<Artist> getArtists() {
+		return artists;
+	}
+
+	public Type addArtist(Artist artist) {
+		if(!this.artists.contains(artist)) {
+			this.artists.add(artist);
+			artist.addType(this);
+		}
+
+		return this;
+	}
+
+	public Type removeType(Artist artist) {
+		if(this.artists.contains(artist)) {
+			this.artists.remove(artist);
+			artist.getTypes().remove(this);
+		}
+
+		return this;
 	}
 	
 	public Long getId() {
