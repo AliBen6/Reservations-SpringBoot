@@ -1,21 +1,22 @@
 package be.iccbxl.pid.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.util.List;
 
 
+@NoArgsConstructor
 @Entity
 @Table(name="roles")
 public class Role {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
+
+	@Column(name = "role")
 	private String role;
-	
-	protected Role() {	}
+
 	
 	public Role(String role) {
 		super();
@@ -33,6 +34,9 @@ public class Role {
 	public void setRole(String role) {
 		this.role = role;
 	}
+
+	@OneToMany(mappedBy = "role")
+	private List<RoleUser> roleUser;
 
 	@Override
 	public String toString() {
