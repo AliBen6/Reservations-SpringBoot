@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+layout:decorate="~{layouts/main}">
+<head>
+<title>Liste des localitis</title>
+</head>
+<body>
+	<div class="container">
+	     <div th:fragment="content">
+	        <h1 th:text="${title}">Locations</h1>
+	
+	        <ul th:unless="${#lists.isEmpty(locations)}">
+                	<li th:each="location : ${locations}">
+		    <span th:text="|${location.address} ${location.website} ${location.designation} ${location.phone} ${location.locality.localityName}|">1000 Bruxelles</span>
+            <span sec:authorize="hasAuthority('admin')" th:text="${location.slug}"></span>
+	    <a th:href="@{/locations/{id}(id=${location.id})}">View</a>
+	</li>
+	        </ul>
+
+
+            <h1>Add new location!</h1>
+		<form sec:authorize="hasAuthority('admin')" th:action="@{/process_add_new_location}" th:object="${locationObj}"
+            method="post" style="max-width: 600px; margin: 0 auto;">
+        <div class="m-3">
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Slug: </label>
+                <div class="col-8">
+                    <input type="text" th:field="*{slug}" class="form-control"
+                            required minlength="3" maxlength="6"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Address: </label>
+                <div class="col-8">
+                    <input type="text" th:field="*{address}" class="form-control"
+                            required minlength="3" maxlength="60"/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Website: </label>
+                <div class="col-8">
+                    <input type="text" th:field="*{website}" class="form-control"
+                            required minlength="3" maxlength="60"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Designation: </label>
+                <div class="col-8">
+                    <input type="text" th:field="*{designation}" class="form-control"
+                            required minlength="3" maxlength="60"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Phone: </label>
+                <div class="col-8">
+                    <input type="text" th:field="*{phone}" class="form-control"
+                            required minlength="3" maxlength="60"/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Locality: </label>
+                <div class="col-8">
+                    <select class="form-control" th:field="*{locality.id}">
+                        <option th:each="Subject : ${subjects}"
+                                th:value="${Subject.id}"
+                                th:text="${Subject.localityName}">
+                        </option>
+                    </select>
+                    
+                </div>
+            </div>
+
+            
+            <div>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+        </form>
+
+	    </div>
+	</div>
+</body>
+</html>

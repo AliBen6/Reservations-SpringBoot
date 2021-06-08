@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+<head>
+    <title>Liste des spectacles</title>
+</head>
+<body>
+<div class="container">
+    <div th:fragment="content">
+        <form th:action="@{/representationsPaginated}" th:object="${searchObj}"
+            method="post" style="max-width: 600px; margin: 0 auto;">
+            <div class="m-3">
+                <div class="form-group row">
+                    <label class="col-4 col-form-label">Search: </label>
+                    <div class="col-8">
+                        <input type="text" th:field="*{search}" class="form-control"
+                                required minlength="0" maxlength="30"/>
+                    </div>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+            </form>
+        <table>
+            <thead>
+                <tr>
+                    <th sec:authorize="hasAuthority('admin')" th:text="ID" />
+                    <th th:text="When" />
+                    <th th:text="Location" />
+                    <th th:text="Show" />
+                    <th th:text="Showdetails" />
+                    <th th:text="Booking" />
+                    <th sec:authorize="hasAnyAuthority('admin')" th:text="Delete" />
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="representation, iStat : ${representationPage.content}"
+                    th:style="${iStat.odd}? 'font-weight: bold;'"
+                    th:alt-title="${iStat.even}? 'even' : 'odd'">
+                    <td sec:authorize="hasAuthority('admin')" th:text="${representation.id}" />
+                    <td th:text="${representation.when}" />
+                    <td th:text="${representation.location?.locality?.localityName}" />
+                    <td th:text="${representation.show.title}" />
+                    <td><a sec:authorize="hasAnyAuthority('member','admin')"  th:href="@{'/shows/' + ${representation.show.id}}">Details</a></td>
+                    <td>
+                        <form sec:authorize="isAuthenticated()" th:if="${representation.show.bookable==true}" th:action="@{/process_book_show}"
+                            method="post" style="max-width: 600px; margin: 0 auto;">
+                            <div class="m-3">
+                                <input type="hidden" th:name="representationId" th:value="${representation.id}">
+                                <div>
+                                    <button type="submit" class="btn btn-primary">Booking</button>
+                                </div>
+                            </div>
+                            </form>
+                    </td>
+                    <td><a sec:authorize="hasAnyAuthority('admin')" th:href="@{'/representations/delete/' + ${representation.id}}">Delete</a></td>
+                </tr>
+            </tbody>
+          </table>
+          <div th:if="${representationPage.totalPages > 0}" class="pagination"
+              th:each="pageNumber : ${pageNumbers}">
+              <a th:href="@{/representationsPaginated(size=${representationPage.size}, page=${pageNumber})}"
+                  th:text=${pageNumber}
+                  th:class="${pageNumber==representationPage.number + 1} ? active"></a>
+          </div>
+
+        <div sec:authorize="hasAuthority('admin')">
+            
+          <h2>Add new representation!</h2>
+          <form th:action="@{/process_add_new_representation}" th:object="${dateTimeModel}"
+                method="post" style="max-width: 600px; margin: 0 auto;">
+          <div class="m-3">
+
+            <label>When:</label>
+            <input required type="date" th:field="*{date}" class="form-control"/>
+            <input required type="time" th:field="*{time}" class="form-control"/>
+
+            <div class="m-3">
+                <div class="form-group row">
+                    <label class="col-4 col-form-label">Show: </label>
+                    <div class="col-8">
+                        <select class="form-control" th:name="showId">
+                            <option th:each="Show : ${shows}"
+                                    th:value="${Show.id}"
+                                    th:text="${Show.title}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+
+              <div class="m-3">
+                <div class="form-group row">
+                    <label class="col-4 col-form-label">Location: </label>
+                    <div class="col-8">
+                        <select class="form-control" th:name="locationId">
+                            <option th:each="Location : ${locations}"
+                                    th:value="${Location.id}"
+                                    th:text="${Location.address}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+              <div>
+                  <button type="submit" class="btn btn-primary">Add</button>
+              </div>
+          </div>
+          </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

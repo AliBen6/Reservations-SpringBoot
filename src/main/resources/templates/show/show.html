@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+<head>
+  <title>Fiche d'un spectacle</title>
+</head>
+<body>
+<div class="container">
+  <div th:fragment="content">
+    <h1 th:text="${show.title}">Ayiti</h1>
+
+    <p th:if="${show.posterUrl}"><img th:src="@{'/images/'+${show.posterUrl}}" th:alt="${show.title}" src="/images/default.jpg" width="200"></p>
+    <canvas th:unless="${show.posterUrl}" width="200" height="100" style="border:1px solid #000000;"></canvas>
+
+    <p th:if="${show.location}"><strong>Lieu de création:</strong> <span th:text="${show.location.designation}">Art Center</span></p>
+
+    <p><strong>Prix:</strong> <span th:text="${show.price} + ' €'">9.99 €</span></p>
+
+    <p th:if="${show.bookable}"><em>Réservable</em></p>
+    <p th:unless="${show.bookable}"><em>Non réservable</em></p>
+
+    <h2>Liste des représentations</h2>
+    <ul th:if="${#lists.size(show.representations)>=1}">
+      <div th:each="representation : ${show.representations}">
+        <li th:text="${#temporals.format(representation.when,'dd-MM-yyyy HH:mm')}">
+        </li>
+        <div  sec:authorize="isAuthenticated()">
+          <form th:if="${show.bookable==true}" th:action="@{/process_book_show}"
+                          method="post" style="max-width: 600px; margin: 0 auto;">
+                          <div class="m-3">
+                              <input type="hidden" th:name="representationId" th:value="${representation.id}">
+                              <div>
+                                  <button type="submit" class="btn btn-primary">Booking</button>
+                              </div>
+                          </div>
+                          </form>
+        </div>
+      </div>
+      
+    </ul>
+    <p th:if="${#lists.size(show.representations)==0}">Aucune représentation</p>
+
+    <h2>Liste des artistes</h2>
+    <ul th:if="${#lists.size(artistTypes)>=1}">
+      <li th:each="collaborateur : ${artistTypes}"
+          th:text="|${collaborateur.artist.firstname} ${collaborateur.artist.lastname } (${collaborateur.type.typeName})|">
+        Firstname Lastname (type)
+      </li>
+    </ul>
+
+    <form sec:authorize="hasAuthority('admin')" th:action="@{/process_add_new_shows_artist_type}"
+    method="post" style="max-width: 600px; margin: 0 auto;">
+  <div class="m-3">
+    <div class="form-group row">
+      <label class="col-4 col-form-label">Show artist: </label>
+      <div class="col-8">
+        <select class="form-control" th:name="artistTypeId">
+          <option th:each="artist_type : ${artistTypesCodebook}"
+              th:value="${artist_type?.id}"
+              th:text="| ${artist_type.artist.firstname} ${artist_type.artist.lastname} ${artist_type?.type?.typeName} |">
+          </option>
+        </select>
+      </div>
+      <input type="hidden" th:name="showId" th:value="${show.id}">
+    </div>
+    <div>
+      <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+  </div>
+</form>
+
+
+    <nav><a th:href="@{/showsPaginated}">Retour à l'index</a></nav>
+  </div>
+</div>
+</body>
+</html>

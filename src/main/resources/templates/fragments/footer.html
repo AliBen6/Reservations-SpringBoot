@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <title>Footer fragment</title>
+  </head>
+  <body>
+    
+
+    
+      <footer th:fragment="footer">
+        
+
+        <div sec:authorize="isAuthenticated()">
+          <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out ?"/>
+          </form>
+        </div>
+
+        <div  sec:authorize="isAnonymous()">
+          <form th:action="@{/login}" method="get">
+            <input type="submit" value="Login page"/>
+          </form>
+  
+          <form th:action="@{/register}" method="get">
+            <input type="submit" value="Register"/>
+          </form>
+        </div>
+        
+
+      &copy; 2021 – EPFC / ICC – Projet Réservations
+    </footer>
+  </body>
+</html>

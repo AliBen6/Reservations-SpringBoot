@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+layout:decorate="~{layouts/main}">
+<head>
+<title>Liste des localitis</title>
+</head>
+<body>
+	<div class="container">
+	     <div th:fragment="content">
+	        <h1 th:text="${title}">Liste des localitss</h1>
+	
+	        <ul th:unless="${#lists.isEmpty(localities)}">
+                	<li th:each="locality : ${localities}">
+		    <span th:text="|${locality.postalCode} ${locality.localityName}|">1000 Bruxelles</span>
+	    <a th:href="@{/localities/{id}(id=${locality.id})}">View</a>
+	</li>
+	        </ul>
+			<form sec:authorize="hasAuthority('admin')" th:action="@{/process_add_new_locality}" th:object="${localityObj}"
+            method="post" style="max-width: 600px; margin: 0 auto;">
+        <div class="m-3">
+            <div class="form-group row">
+                <label class="col-4 col-form-label">PostalCode: </label>
+                <div class="col-8">
+                    <input type="text" th:field="*{postalCode}" class="form-control"
+                            required minlength="3" maxlength="6"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Locality: </label>
+                <div class="col-8">
+                    <input type="text" th:field="*{localityName}" class="form-control"
+                            required minlength="3" maxlength="60"/>
+                </div>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+        </form>
+
+	    </div>
+	</div>
+</body>
+</html>

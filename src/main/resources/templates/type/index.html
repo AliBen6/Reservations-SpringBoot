@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
+ layout:decorate="~{layouts/main}">
+<head>
+<title>Liste des types</title>
+</head>
+<body>
+	<div class="container">
+	     <div th:fragment="content">
+	        <h1 th:text="${title}">Liste des types</h1>
+	
+	        <ul th:unless="${#lists.isEmpty(types)}">
+                	<li th:each="type : ${types}">
+						<span th:text="${type.typeName}">Acteur</span>
+					<a th:href="@{/types/{id}(id=${type.id})}">View</a>
+					</li>
+	        </ul>
+
+			
+			<form sec:authorize="hasAuthority('admin')" th:action="@{/process_add_new_type}" th:object="${typeObj}"
+			method="post" style="max-width: 600px; margin: 0 auto;">
+			<div class="m-3">
+				<div class="form-group row">
+					<label class="col-4 col-form-label">Type name: </label>
+					<div class="col-8">
+						<input type="text" th:field="*{typeName}" class="form-control"
+								required minlength="3" maxlength="30"/>
+					</div>
+				</div>
+				<div>
+					<button type="submit" class="btn btn-primary">Add</button>
+				</div>
+			</div>
+		</form>
+	    </div>
+	</div>
+</body>
+</html>

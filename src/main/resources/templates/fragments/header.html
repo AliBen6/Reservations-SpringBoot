@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <title>Header fragment</title>
+  </head>
+  <body>
+    <header class="navbar navbar-inverse navbar-fixed-top" th:fragment="header">
+
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#" th:href="@{/representationsPaginated}">Réservations</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li  th:classappend="${module == 'home' ? 'active' : ''}">
+              <a href="#" th:href="@{/home}">Home</a>
+            </li>
+            <li th:classappend="${module == 'artists' ? 'active' : ''}">
+              <a href="#" th:href="@{/artists}">Artists</a>
+            </li>
+            <li th:classappend="${module == 'shows' ? 'active' : ''}">
+              <a href="#" th:href="@{/showsPaginated}">Shows</a>
+            </li>
+            <li th:classappend="${module == 'localities' ? 'active' : ''}">
+              <a href="#" th:href="@{/localities}">Localities</a>
+            </li>
+            <li th:classappend="${module == 'types' ? 'active' : ''}">
+              <a href="#" th:href="@{/types}">Types</a>
+            </li>
+            <li th:classappend="${module == 'locations' ? 'active' : ''}">
+              <a href="#" th:href="@{/locations}">Locations</a>
+            </li>
+            <li th:classappend="${module == 'types' ? 'active' : ''}">
+              <a href="#" th:href="@{/profile}">Profile</a>
+            </li>
+            <li th:classappend="${module == 'types' ? 'active' : ''}">
+              <a href="#" th:href="@{/myReservations}">My reservations</a>
+            </li>
+            
+          </ul>
+        </div>
+      </div>
+    </header>
+  </body>
+</html>

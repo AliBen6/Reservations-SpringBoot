@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
+ layout:decorate="~{layouts/main}">
+<head>
+<title>Location</title>
+</head>
+<body>
+	<div class="container">
+	     <div th:fragment="content">
+			 <h1 sec:authorize="hasAuthority('admin')" th:text="${location.slug}"></h1>
+	        <h1 th:text="| ${location.address} ${location.website} ${location.designation} ${location.phone} ${location.locality.localityName}|">1000 Bruxelles</h1>
+
+
+	        <nav><a th:href="@{/locations}">Retour à l'index</a></nav>
+	     </div>
+	</div>
+</body>
+</html>

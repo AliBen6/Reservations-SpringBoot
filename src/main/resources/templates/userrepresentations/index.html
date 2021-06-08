@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
+ layout:decorate="~{layouts/main}">
+<head>
+<title>Liste des reservationes</title>
+</head>
+<body>
+	<div class="container">
+	     <div th:fragment="content">
+	        <h1 th:text="${title}">Liste des reservationes</h1>
+	
+	        <table th:unless="${#lists.isEmpty(userRepresentations)}">
+                <thead>
+                <tr>
+                    <th>Show title</th>
+                    <th>Time</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="ur : ${userRepresentations}">
+                    <td><a th:text="${ur.representation.show.title}"
+                           th:href="@{/shows/{id}(id=${ur.representation.show.id})}">Sull</a></td>
+                    <td th:text="${ur.representation.when}">Sull</td>
+                </tr>
+                </tbody>
+            </table>
+	    </div>
+	</div>
+</body>
+</html>

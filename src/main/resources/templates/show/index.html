@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.mx/thymeleaf/layout"
+      layout:decorate="~{layouts/main}">
+<head>
+    <title>Liste des spectacles</title>
+</head>
+<body>
+<div class="container">
+    <div th:fragment="content">
+        <form  th:action="@{/showsPaginated}" th:object="${searchObj}"
+            method="post" style="max-width: 600px; margin: 0 auto;">
+            <div class="m-3">
+                <div class="form-group row">
+                    <label class="col-4 col-form-label">Search: </label>
+                    <div class="col-8">
+                        <input type="text" th:field="*{search}" class="form-control"
+                                required minlength="0" maxlength="30"/>
+                    </div>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+            </form>
+        <table>
+            <thead>
+                <tr>
+                    <th sec:authorize="hasAuthority('admin')" th:text="ID" />
+                    <th th:text="Title" />
+                    <th th:text="Description" />
+                    <th th:text="Bookable" />
+                    <th sec:authorize="hasAuthority('admin')"  th:text="Slug" />
+                    <th th:text="Representations" />
+                    <th th:text="Price" />
+                    <th th:text="Address" />
+                    <th sec:authorize="hasAuthority('admin')" th:text="Delete" />
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="show, iStat : ${showPage.content}"
+                    th:style="${iStat.odd}? 'font-weight: bold;'"
+                    th:alt-title="${iStat.even}? 'even' : 'odd'">
+                    <td sec:authorize="hasAuthority('admin')" th:text="${show.id}" />
+                    <td th:text="${show.title}" />
+                    <td th:text="${show.description}" />
+                    <td th:text="${show.bookable}" />
+                    <td sec:authorize="hasAuthority('admin')" th:text="${show.slug}" />
+                    <td th:text="${#lists.size(show.representations)}" />
+                    <td th:text="${show.price}" />
+                    <td th:text="${show.location?.address}" />
+                    <td><a sec:authorize="hasAnyAuthority('member','admin')" th:href="@{'/shows/' + ${show.id}}">Details</a></td>
+                </tr>
+            </tbody>
+          </table>
+          <div th:if="${showPage.totalPages > 0}" class="pagination"
+              th:each="pageNumber : ${pageNumbers}">
+              <a th:href="@{/showsPaginated(size=${showPage.size}, page=${pageNumber})}"
+                  th:text=${pageNumber}
+                  th:class="${pageNumber==showPage.number + 1} ? active"></a>
+          </div>
+
+          <div sec:authorize="hasAuthority('admin')">
+          <h2>Add new show!</h2>
+          <form th:action="@{/process_add_new_show}" th:object="${newShow}"
+                method="post" style="max-width: 600px; margin: 0 auto;">
+          <div class="m-3">
+              <div class="form-group row">
+                  <label class="col-4 col-form-label">Title: </label>
+                  <div class="col-8">
+                      <input type="text" th:field="*{title}" class="form-control"
+                              required minlength="2" maxlength="30"/>
+                  </div>
+                  <label class="col-4 col-form-label">Description: </label>
+                  <div class="col-8">
+                    <input type="text" th:field="*{description}" class="form-control"
+                            required minlength="2" maxlength="200"/>
+                </div>
+
+                <label class="col-4 col-form-label">Slug: </label>
+                  <div class="col-8">
+                    <input type="text" th:field="*{slug}" class="form-control"
+                            required minlength="2" maxlength="200"/>
+                </div>
+                <label class="col-4 col-form-label">Poster url: </label>
+                <div class="col-8">
+                  <input type="text" th:field="*{posterUrl}" class="form-control"
+                          required minlength="2" maxlength="200"/>
+              </div>
+              <label class="col-4 col-form-label">Price [$]: </label>
+                <div class="col-8">
+                  <input type="number" th:field="*{price}" class="form-control"
+                          required/>
+              </div>
+              <label class="col-4 col-form-label">Bookable: </label>
+                <div class="col-8">
+                    <input type="checkbox" th:field="*{bookable}" />
+              </div>
+              </div>
+
+              <div class="m-3">
+                <div class="form-group row">
+                    <label class="col-4 col-form-label">Location: </label>
+                    <div class="col-8">
+                        <select class="form-control" th:name="locationId">
+                            <option th:each="Location : ${locations}"
+                                    th:value="${Location.id}"
+                                    th:text="${Location.address}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+              <div>
+                  <button type="submit" class="btn btn-primary">Add</button>
+              </div>
+          </div>
+          </form>
+              <div>
+                  <a th:href="@{/show/export}">Export shows to CSV</a>
+              </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
