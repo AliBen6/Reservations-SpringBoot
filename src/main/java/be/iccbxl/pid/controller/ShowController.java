@@ -160,8 +160,8 @@ public class ShowController {
 		List<Show> listShows = service.getAll();
 
 		ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
-		String[] csvHeader = {"Show Id", "Slug", "Title", "Description", "Location","Bookable","price"};
-		String[] nameMapping = {"id", "slug", "title", "description", "location","bookable","price"};
+		String[] csvHeader = {"Show Id", "Slug", "Title", "Description", "Poster url", "Location","Bookable","price"};
+		String[] nameMapping = {"id", "slug", "title", "description", "posterUrl", "location","bookable","price"};
 
 		csvWriter.writeHeader(csvHeader);
 
