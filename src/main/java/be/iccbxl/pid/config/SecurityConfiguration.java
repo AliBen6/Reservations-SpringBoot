@@ -29,7 +29,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.csrf().disable().headers().frameOptions().disable();
 		http.authorizeRequests()
 				.antMatchers("/login", "/register", "/process_register", "/h2-console/**", "/home**",
-						"/representations**", "/shows**")
+						"/representations**", "/rss" ,"/shows**")
 				.permitAll().anyRequest().authenticated().and().formLogin().loginPage("/login")
 				.defaultSuccessUrl("/representationsPaginated", true).permitAll().and().logout().permitAll();
 	}
